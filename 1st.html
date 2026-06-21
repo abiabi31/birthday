@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <title>panda</title>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: black;
+      }
+
+      #bgVideo {
+        width: 100vw;
+        height: 100vh;
+        object-fit: contain;
+        display: none;
+      }
+
+      #msg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        z-index: 10;
+        cursor: pointer;
+        text-align: center;
+        padding: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="msg">🎉 Today is a special day<br />so click to continue ▶</div>
+
+    <video id="bgVideo" controls>
+      <source src="./song/b.mp4" type="video/mp4" />
+    </video>
+
+    <script>
+      const msg = document.getElementById("msg");
+      const video = document.getElementById("bgVideo");
+
+      msg.addEventListener("click", () => {
+        msg.style.display = "none";
+        video.style.display = "block";
+        video.play().catch(() => {});
+      });
+
+      // 20 sec apram redirect
+      setTimeout(() => {
+        window.location.href = "a.html";
+      }, 20000);
+    </script>
+  </body>
+</html>

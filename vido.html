@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <title>panda</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: black;
+      }
+
+      #bgVideo {
+        width: 100vw;
+        height: 100vh;
+        object-fit: contain; /* முழு video தெரியும் */
+      }
+    </style>
+  </head>
+  <body>
+    <video id="bgVideo" autoplay controls>
+      <source src="./song/pan.mp4" type="video/mp4" />
+    </video>
+  </body>
+</html>

@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cinematic Birthday</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial;
+      }
+
+      body {
+        overflow: hidden;
+        height: 100vh;
+        background:
+          radial-gradient(circle at 20% 20%, #1a2a6c 0%, transparent 40%),
+          radial-gradient(circle at 80% 30%, #1a2a6c 0%, transparent 45%),
+          radial-gradient(
+            circle at 50% 80%,
+            #0f0c29 0%,
+            #302b63 40%,
+            #24243e 100%
+          );
+        background-color: #000;
+      }
+
+      /* ⭐ STARS */
+      .stars {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 6px white;
+        animation: twinkle 2s infinite alternate;
+      }
+
+      @keyframes twinkle {
+        from {
+          opacity: 0.2;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1.3);
+        }
+      }
+
+      /* PAGE */
+      .page {
+        display: none;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .active {
+        display: flex;
+      }
+
+      h1 {
+        color: white;
+        font-size: 3rem;
+        text-shadow:
+          0 0 20px #ff4fd8,
+          0 0 40px #00e5ff;
+      }
+
+      button {
+        padding: 15px 30px;
+        margin: 10px;
+        border: none;
+        border-radius: 40px;
+        cursor: pointer;
+        font-size: 18px;
+        background: linear-gradient(45deg, #ff0080, #7928ca);
+        color: white;
+        box-shadow: 0 0 20px #ff0080;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        transform: scale(1.1);
+      }
+
+      /* 🎂 CAKE */
+      .cake {
+        position: relative;
+        width: 200px;
+        height: 220px;
+        margin: 30px auto;
+      }
+
+      .layer {
+        position: absolute;
+        border-radius: 15px;
+      }
+
+      .layer1 {
+        width: 200px;
+        height: 70px;
+        bottom: 0;
+        background: linear-gradient(145deg, #ffb347, #ff7b00);
+      }
+
+      .layer2 {
+        width: 160px;
+        height: 60px;
+        bottom: 70px;
+        left: 20px;
+        background: linear-gradient(145deg, #ff6ec4, #7873f5);
+      }
+
+      .layer3 {
+        width: 120px;
+        height: 50px;
+        bottom: 130px;
+        left: 40px;
+        background: linear-gradient(145deg, #ffe259, #ffa751);
+      }
+
+      .candle {
+        position: absolute;
+        width: 10px;
+        height: 45px;
+        background: white;
+        bottom: 180px;
+        left: 95px;
+      }
+
+      .flame {
+        width: 18px;
+        height: 20px;
+        background: gold;
+        border-radius: 50%;
+        position: absolute;
+        top: -18px;
+        left: -4px;
+        animation: flicker 0.2s infinite alternate;
+      }
+
+      @keyframes flicker {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.2);
+        }
+      }
+
+      /* CUT EFFECT */
+      .cake.cut .layer1 {
+        transform: rotateZ(-10deg) translateX(-30px);
+      }
+      .cake.cut .layer2 {
+        transform: rotateZ(10deg) translateX(30px);
+      }
+      .cake.cut .layer3 {
+        transform: translateY(-10px);
+        opacity: 0.8;
+      }
+
+      /* FLOAT */
+      .float {
+        position: absolute;
+        font-size: 26px;
+        animation: rise 6s linear forwards;
+      }
+
+      @keyframes rise {
+        0% {
+          transform: translateY(100vh);
+          opacity: 0;
+        }
+        30% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-120vh);
+          opacity: 0;
+        }
+      }
+
+      /* SPARK */
+      .spark {
+        position: absolute;
+        font-size: 20px;
+        animation: pop 1s linear forwards;
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(0);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="stars" id="stars"></div>
+
+    <!-- PAGE 1 -->
+    <div class="page active" id="page1">
+      <h1>🎂 Is Today Your Birthday</h1>
+
+      <div class="cake">
+        <div class="layer layer1"></div>
+        <div class="layer layer2"></div>
+        <div class="layer layer3"></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
+
+      <button onclick="yesPage()">YES 🎉</button>
+      <button onclick="noPage()">NO 😅</button>
+
+      <p id="msg" style="color: white; margin-top: 20px"></p>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="page" id="page2">
+      <h1 id="title">🎉 HAPPY BIRTHDAY 🎉</h1>
+
+      <button id="cutBtn" onclick="cutCake()">🎂 Tap Cake to CUT</button>
+
+      <div class="cake" id="cake">
+        <div class="layer layer1"></div>
+        <div class="layer layer2"></div>
+        <div class="layer layer3"></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
+
+      <button
+        id="giftBtn"
+        style="display: none"
+        onclick="
+          window.location.href = '/home/abi/Public/stdy/birth/bithday.html'
+        "
+      >
+        Open Gift 🎁
+      </button>
+    </div>
+
+    <!-- PAGE 3 -->
+    <!-- <div class="page" id="page3">
+      <h1>🎁 Surprise World 🎁</h1>
+      <p style="color: white">Your Gift is Ready 💖</p>
+      <button
+        onclick="
+          window.location.href = '/home/abi/Public/stdy/birth/bithday.html'
+        "
+      >
+        Open 🎁
+      </button>
+      <button onclick="'wind'">Open 🎁</button>
+    </div> -->
+
+    <script>
+      // STARS
+      function createStars() {
+        const box = document.getElementById("stars");
+        for (let i = 0; i < 120; i++) {
+          const s = document.createElement("div");
+          s.className = "star";
+          s.style.left = Math.random() * 100 + "vw";
+          s.style.top = Math.random() * 100 + "vh";
+          s.style.animationDuration = 1 + Math.random() * 3 + "s";
+          box.appendChild(s);
+        }
+      }
+      createStars();
+
+      // PAGE CONTROL
+      function noPage() {
+        document.getElementById("msg").innerHTML =
+          "😅 Only YES is accepted today!";
+      }
+
+      function yesPage() {
+        switchPage("page1", "page2");
+        spawn("🎂", 40);
+      }
+
+      function giftPage() {
+        switchPage("page2", "page3");
+        spawn(["🎁", "💖", "🎉"], 80);
+      }
+
+      function switchPage(a, b) {
+        document.getElementById(a).classList.remove("active");
+        document.getElementById(b).classList.add("active");
+      }
+
+      // CUT CAKE FLOW
+      function cutCake() {
+        const cake = document.getElementById("cake");
+        cake.classList.add("cut");
+
+        document.getElementById("cutBtn").style.display = "none";
+
+        for (let i = 0; i < 20; i++) {
+          let s = document.createElement("div");
+          s.className = "spark";
+          s.innerHTML = "✨";
+          s.style.left = Math.random() * 200 + "px";
+          s.style.top = Math.random() * 200 + "px";
+          cake.appendChild(s);
+          setTimeout(() => s.remove(), 1000);
+        }
+
+        document.getElementById("title").innerHTML =
+          "🎂 Cake Cut Successfully! 🎉";
+
+        setTimeout(() => {
+          document.getElementById("giftBtn").style.display = "inline-block";
+        }, 800);
+      }
+
+      // FLOAT EFFECT
+      function spawn(items, count) {
+        for (let i = 0; i < count; i++) {
+          let e = document.createElement("div");
+          e.className = "float";
+          e.innerHTML = Array.isArray(items)
+            ? items[Math.floor(Math.random() * items.length)]
+            : items;
+
+          e.style.left = Math.random() * 100 + "vw";
+          e.style.animationDuration = 3 + Math.random() * 4 + "s";
+
+          document.body.appendChild(e);
+          setTimeout(() => e.remove(), 8000);
+        }
+      }
+    </script>
+  </body>
+</html>
